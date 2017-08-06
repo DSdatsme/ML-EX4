@@ -64,17 +64,20 @@ Theta2_grad = zeros(size(Theta2));
 %
 
 % 1. Feed-forward to compute h = a3.
-a1 = [ones(1, m); X'];  % 401 x m
+a1 = [ones(1, m); X'];  % 401 x 5000
 z2 = Theta1 * a1;
-a2 = [ones(1, m); sigmoid(z2)];  % 26 x m
-a3 = sigmoid(Theta2 * a2);  % 10 x m
+a2 = [ones(1, m); sigmoid(z2)];  % 26 x 5000
+a3 = sigmoid(Theta2 * a2);  % 10 x 5000
 
 % Explode y into 10 values with Y[i] := i == y.
 Y = eye(num_labels)(y,:);
 J = (1/m) * sum(sum(-Y .* log(a3)' - (1 - Y) .* log(1 - a3)'));
 
 
-% -------------------------------------------------------------
+% 2. Regularization
+R_Theta1 = sum(sum(Theta1(:, 2:end).^2));
+R_Theta2 = sum(sum(Theta2(:, 2:end).^2));
+J = J + (lambda/(2 * m)) *  (R_Theta1 + R_Theta2);
 
 % =========================================================================
 
