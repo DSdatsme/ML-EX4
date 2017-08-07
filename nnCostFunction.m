@@ -84,14 +84,17 @@ J = J + (lambda/(2 * m)) *  (R_Theta1 + R_Theta2);
 delta_3 = a3 - Y';   % 10 x 5000
 delta_2 = (Theta2' * delta_3) .*[ones(1, m); sigmoidGradient(z2)];  % 26*10 x 10*5000 .* 25 x 5000
 %delta_2 = delta_2(2:end);
-size(delta_2)
+%size(delta_2)
 Theta2_grad = Theta2_grad + delta_3 * a2';  % 10 x 26
-size(Theta2_grad)
+%size(Theta2_grad)
 Theta1_grad = Theta1_grad + delta_2(2:end, :) * a1';  %25 x 401
 
 Theta2_grad = Theta2_grad / m;
 Theta1_grad = Theta1_grad / m;
 
+%Regularized gradients
+Theta2_grad(:, 2:end) = Theta2_grad(:, 2:end) + (lambda / m) * (Theta2(:, 2:end)) ;
+Theta1_grad(:, 2:end) = Theta1_grad(:, 2:end) + (lambda / m) * (Theta1(:, 2:end)) ;
 
 % =========================================================================
 
